@@ -59,10 +59,12 @@ const getRolesForDay = (week: number, day: number): string[] => {
     }
   }
   
-  // Week 4: Monday to Friday - Frontend Dev and Backend Dev
+  // Week 4: Monday to Friday - Frontend Dev, Backend Dev, Design Lead, and Product Lead
   if (week === 4 && day >= 1 && day <= 5) {
     roles.push('frontend-dev');
     roles.push('backend-dev');
+    roles.push('design-lead');
+    roles.push('product-lead');
   }
   
   return roles;
@@ -278,7 +280,7 @@ export const TimelineBoard = ({
   const overlapInfo = overlaps.length > 0 ? overlaps[0] : null;
 
   return (
-    <div className="min-h-screen bg-terminal-bg text-terminal-foreground font-mono">
+    <div className="min-h-screen text-terminal-foreground font-mono">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-12">
@@ -338,7 +340,7 @@ export const TimelineBoard = ({
           return (
             <div key={week} className="space-y-4">
               {/* Terminal Window Header */}
-              <div className="border border-terminal-border bg-terminal-bg">
+              <div className="border border-terminal-border">
                 <div 
                   className="terminal-window-header text-lg"
                   style={{ 
@@ -349,25 +351,26 @@ export const TimelineBoard = ({
                   WEEK {week} {phaseInfo.label}: {phase.title}
                 </div>
                 
-                <div className="p-6 space-y-4">
-                  {/* Technology Tag */}
-                  {phase.technology && (
-                    <div>
-                      <TechnologyBadge technology={phase.technology} />
-                    </div>
-                  )}
+                {/* Technology Tag */}
+                {phase.technology && (
+                  <div className="px-6 pt-6 pb-0">
+                    <TechnologyBadge technology={phase.technology} />
+                  </div>
+                )}
 
-                  {/* Overlap Indicator - Simple text indicator */}
-                  {hasOverlap && (
+                {/* Overlap Indicator - Simple text indicator */}
+                {hasOverlap && (
+                  <div className="px-6 pt-4">
                     <div className="border border-terminal-secondary bg-terminal-bg p-2">
                       <p className="text-xs text-terminal-secondary font-mono uppercase tracking-wider">
                         &gt; NEW CYCLE OVERLAP STARTS AT WEEK {overlapInfo.overlap.overlapStartWeek}
                       </p>
                     </div>
-                  )}
+                  </div>
+                )}
 
-                  {/* Day Rectangles - Card-based design */}
-                  <div className="grid grid-cols-5 gap-4 mt-6 items-stretch">
+                {/* Day Rectangles - Card-based design */}
+                <div className="grid grid-cols-5 gap-4 items-stretch px-6 pt-6 pb-6">
                     {DAYS.map((day, dayIndex) => {
                       const dayNumber = dayIndex + 1; // 1 = Monday, 5 = Friday
                       const isInPhase = isDayInPhase(week, dayNumber);
@@ -431,29 +434,6 @@ export const TimelineBoard = ({
                               {milestones.length > 0 && (
                                 <MilestoneMarker milestone={milestones[0]} size="md" />
                               )}
-                              {/* Role Icons */}
-                              {getRolesForDay(week, dayNumber).map((roleKey, idx) => {
-                                const role = ROLES[roleKey as keyof typeof ROLES];
-                                if (!role) return null;
-                                const IconComponent = role.Icon;
-                                return (
-                                  <div
-                                    key={idx}
-                                    className="w-8 h-8 border flex items-center justify-center bg-terminal-bg"
-                                    style={{
-                                      borderColor: role.color,
-                                    }}
-                                    title={role.label}
-                                  >
-                                    <IconComponent 
-                                      size={14} 
-                                      style={{ color: role.color }}
-                                      strokeWidth={2}
-                                      fill={role.color}
-                                    />
-                                  </div>
-                                );
-                              })}
                             </div>
                             
                             {/* Spacer for top row */}
@@ -478,6 +458,31 @@ export const TimelineBoard = ({
                                   {line}
                                 </p>
                               ))}
+                              
+                              {/* Personnel/Roles with icons */}
+                              {getRolesForDay(week, dayNumber).length > 0 && (
+                                <div className="mt-2 pt-2 border-t" style={{ borderColor: 'rgba(51, 255, 0, 0.2)' }}>
+                                  {getRolesForDay(week, dayNumber).map((roleKey, idx) => {
+                                    const role = ROLES[roleKey as keyof typeof ROLES];
+                                    if (!role) return null;
+                                    const IconComponent = role.Icon;
+                                    return (
+                                      <div 
+                                        key={idx}
+                                        className="flex items-center gap-2 text-xs text-terminal-foreground font-mono leading-relaxed"
+                                      >
+                                        <IconComponent 
+                                          size={14} 
+                                          style={{ color: role.color }}
+                                          strokeWidth={2}
+                                          fill={role.color}
+                                        />
+                                        <span>{role.label}</span>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              )}
                             </div>
 
                             {/* Footer - Command-like text - Inverted video style */}
@@ -518,7 +523,7 @@ export const TimelineBoard = ({
                     const fridayContent = getDayContent(3, 5, phase, [], false, mainDecisionGate?.decision || null);
                     return fridayContent.callout;
                   })())) && week === 3 && (
-                    <div className="mt-4 grid grid-cols-5 gap-4">
+                    <div className="mt-4 grid grid-cols-5 gap-4 px-6 pb-6">
                       <div></div>
                       <div></div>
                       {mainDecisionGate?.decision && (
@@ -547,7 +552,6 @@ export const TimelineBoard = ({
                       })()}
                     </div>
                   )}
-                </div>
               </div>
             </div>
           );

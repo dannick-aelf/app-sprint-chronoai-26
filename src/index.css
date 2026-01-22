@@ -47,18 +47,9 @@
 html.dark,
 html {
   color-scheme: dark;
-  background-color: var(--color-terminal-bg);
 }
 
 body {
-  background-color: var(--color-terminal-bg);
-  background-image: repeating-linear-gradient(
-    0deg,
-    var(--color-terminal-bg),
-    var(--color-terminal-bg) 1px,
-    rgba(31, 82, 31, 0.3) 1px,
-    rgba(31, 82, 31, 0.3) 2px
-  );
   color: var(--color-terminal-foreground);
   margin: 0;
   padding: 0;
@@ -72,7 +63,7 @@ body {
   position: relative;
 }
 
-/* CRT Scanline Overlay - Subtle */
+/* CRT Scanline Overlay - Horizontal Lines */
 body::after {
   content: '';
   position: fixed;
@@ -81,21 +72,22 @@ body::after {
   width: 100%;
   height: 100%;
   background: repeating-linear-gradient(
-    0deg,
+    to bottom,
     transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.2) 2px,
-    rgba(0, 0, 0, 0.2) 4px
+    transparent 1px,
+    rgba(31, 82, 31, 0.3) 1px,
+    rgba(31, 82, 31, 0.3) 2px
   );
   pointer-events: none;
-  z-index: 9999;
-  opacity: 0.08;
+  z-index: 1;
+  opacity: 1;
 }
 
 #root {
   min-height: 100vh;
   width: 100%;
-  background-color: var(--color-terminal-bg);
+  position: relative;
+  z-index: 2;
 }
 
 /* Smooth scrolling */
