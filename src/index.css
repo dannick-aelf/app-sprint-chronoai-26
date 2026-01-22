@@ -1,3 +1,225 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Terminal CLI Design System - Color Tokens */
+@theme {
+  /* Backgrounds */
+  --color-terminal-bg: #0a0a0a;
+  --color-terminal-card: #0a0a0a;
+  
+  /* Text */
+  --color-terminal-primary: #33ff00;
+  --color-terminal-secondary: #ffb000;
+  --color-terminal-muted: #1f521f;
+  --color-terminal-foreground: #33ff00;
+  
+  /* UI Elements */
+  --color-terminal-border: #1f521f;
+  --color-terminal-accent: #33ff00;
+  --color-terminal-error: #ff3333;
+  
+  /* Legacy support (mapped to terminal) */
+  --color-dark-bg: var(--color-terminal-bg);
+  --color-dark-surface: var(--color-terminal-card);
+  --color-dark-elevated: var(--color-terminal-card);
+  --color-dark-border: var(--color-terminal-border);
+  --color-dark-text-primary: var(--color-terminal-foreground);
+  --color-dark-text-secondary: var(--color-terminal-muted);
+  --color-dark-text-muted: var(--color-terminal-muted);
+  
+  /* Cyberpunk legacy (mapped for compatibility) */
+  --color-cyber-bg: var(--color-terminal-bg);
+  --color-cyber-card: var(--color-terminal-card);
+  --color-cyber-muted: var(--color-terminal-muted);
+  --color-cyber-foreground: var(--color-terminal-foreground);
+  --color-cyber-muted-foreground: var(--color-terminal-muted);
+  --color-cyber-accent: var(--color-terminal-primary);
+  --color-cyber-accent-secondary: var(--color-terminal-secondary);
+  --color-cyber-border: var(--color-terminal-border);
+  --color-cyber-destructive: var(--color-terminal-error);
+}
+
+/* Terminal Text Glow */
+:root {
+  --text-shadow-terminal: 0 0 5px rgba(51, 255, 0, 0.5);
+}
+
+/* Terminal Dark Mode - Default */
+html.dark,
+html {
+  color-scheme: dark;
+  background-color: var(--color-terminal-bg);
+}
+
+body {
+  background-color: var(--color-terminal-bg);
+  background-image: repeating-linear-gradient(
+    0deg,
+    var(--color-terminal-bg),
+    var(--color-terminal-bg) 1px,
+    rgba(31, 82, 31, 0.3) 1px,
+    rgba(31, 82, 31, 0.3) 2px
+  );
+  color: var(--color-terminal-foreground);
+  margin: 0;
+  padding: 0;
+  font-family: 'JetBrains Mono', 'Fira Code', 'VT323', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  font-feature-settings: 'kern' 1;
+  text-rendering: optimizeLegibility;
+  letter-spacing: 0.05em;
+  position: relative;
+}
+
+/* CRT Scanline Overlay - Subtle */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.2) 2px,
+    rgba(0, 0, 0, 0.2) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.08;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--color-terminal-bg);
+}
+
+/* Smooth scrolling */
+* {
+  scroll-behavior: smooth;
+}
+
+/* Box sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Custom scrollbar for terminal */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-terminal-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-terminal-border);
+  border: 1px solid var(--color-terminal-border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-terminal-primary);
+}
+
+/* Selection styling - Terminal */
+::selection {
+  background-color: var(--color-terminal-primary);
+  color: var(--color-terminal-bg);
+}
+
+/* Terminal Utility Classes */
+
+/* Text Glow - Phosphor Effect */
+.terminal-text-glow {
+  text-shadow: var(--text-shadow-terminal);
+}
+
+/* Blink Cursor Animation */
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Typing Animation */
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.animate-typing {
+  animation: typing 2s steps(40, end);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Glitch Effect - Subtle */
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-1px, 0); }
+  40% { transform: translate(1px, 0); }
+  60% { transform: translate(-1px, 0); }
+  80% { transform: translate(1px, 0); }
+}
+
+.terminal-glitch:hover {
+  animation: glitch 0.3s;
+}
+
+/* Terminal Window Header */
+.terminal-window-header {
+  border-bottom: 1px solid var(--color-terminal-border);
+  background-color: var(--color-terminal-primary);
+  color: var(--color-terminal-bg);
+  padding: 0.5rem 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Terminal Prompt */
+.terminal-prompt::before {
+  content: '> ';
+  color: var(--color-terminal-primary);
+}
+
+/* ASCII Separator */
+.terminal-separator {
+  border: none;
+  border-top: 1px dashed var(--color-terminal-border);
+  margin: 1rem 0;
+}
+
+/* Status Code Styles */
+.status-ok {
+  color: var(--color-terminal-primary);
+}
+
+.status-err {
+  color: var(--color-terminal-error);
+}
+
+.status-warn {
+  color: var(--color-terminal-secondary);
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .animate-blink,
+  .animate-typing,
+  .terminal-glitch {
+    animation: none;
+  }
+}
