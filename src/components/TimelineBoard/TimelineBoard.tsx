@@ -361,8 +361,8 @@ export const TimelineBoard = ({
                 {/* Overlap Indicator - Simple text indicator */}
                 {hasOverlap && (
                   <div className="px-6 pt-4">
-                    <div className="border border-terminal-secondary bg-terminal-bg p-2">
-                      <p className="text-xs text-terminal-secondary font-mono uppercase tracking-wider">
+                    <div className="border bg-terminal-bg p-2" style={{ borderColor: '#ff00ff' }}>
+                      <p className="text-xs font-mono uppercase tracking-wider" style={{ color: '#ff00ff' }}>
                         &gt; NEW CYCLE OVERLAP STARTS AT WEEK {overlapInfo.overlap.overlapStartWeek}
                       </p>
                     </div>
