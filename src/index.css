@@ -207,11 +207,35 @@ body::after {
   color: var(--color-terminal-secondary);
 }
 
+/* Day Card Hover Effect - Glow and Float */
+.day-card-hover {
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out, background-color 0.2s ease-out;
+  cursor: pointer;
+}
+
+.day-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(51, 255, 0, 0.3), 0 0 20px rgba(51, 255, 0, 0.15);
+  background-color: var(--color-terminal-bg) !important;
+}
+
+.day-card-hover:hover:not([style*="border-color: rgb(31, 82, 31)"]) {
+  border-color: var(--color-terminal-primary) !important;
+}
+
 /* Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
   .animate-blink,
   .animate-typing,
   .terminal-glitch {
     animation: none;
+  }
+  
+  .day-card-hover {
+    transition: none;
+  }
+  
+  .day-card-hover:hover {
+    transform: none;
   }
 }

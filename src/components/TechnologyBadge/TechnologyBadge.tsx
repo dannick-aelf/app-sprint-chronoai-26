@@ -35,13 +35,14 @@ export const TechnologyBadge = ({ technology, size = 'sm' }: TechnologyBadgeProp
   return (
     <div
       className={`
-        inline-flex items-center border bg-terminal-bg
+        inline-flex items-center border
         ${sizeClass}
         font-mono uppercase tracking-wider
       `}
       style={{
         borderColor: config.color,
         color: config.color,
+        backgroundColor: 'transparent',
       }}
       title={`Technology: ${config.label}`}
     >

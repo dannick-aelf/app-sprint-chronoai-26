@@ -53,8 +53,8 @@ const getRolesForDay = (week: number, day: number): string[] => {
     if (day >= 3 && day <= 5) {
       roles.push('product-lead');
     }
-    // Wednesday, Thursday - Business Director
-    if (day >= 3 && day <= 4) {
+    // Wednesday, Thursday, Friday - Business Director
+    if (day >= 3 && day <= 5) {
       roles.push('business-director');
     }
   }
@@ -275,10 +275,10 @@ export const TimelineBoard = ({
   // Phase labels and colors
   const getPhaseInfo = (week: number) => {
     const info = {
-      1: { label: 'IDEATION', borderColor: '#ff00ff' },
-      2: { label: 'TESTING', borderColor: '#00d4ff' },
-      3: { label: 'FEEDBACK', borderColor: '#33ff00' },
-      4: { label: 'LAUNCH', borderColor: '#ffb000' },
+      1: { label: 'IDEATION & APP DEMO', borderColor: '#ff00ff' },
+      2: { label: 'INTERNAL TESTING', borderColor: '#00d4ff' },
+      3: { label: 'FEEDBACK, DECISION & MARKET PREPARATION', borderColor: '#33ff00' },
+      4: { label: 'TESTFLIGHT, FINAL MARKET PREP & iOS SUBMISSION', borderColor: '#ffb000' },
     };
     return info[week as keyof typeof info] || info[1];
   };
@@ -311,9 +311,10 @@ export const TimelineBoard = ({
                 return (
                   <div key={key} className="flex items-center gap-2">
                     <div
-                      className="w-6 h-6 border flex items-center justify-center bg-terminal-bg flex-shrink-0"
+                      className="w-6 h-6 border flex items-center justify-center flex-shrink-0"
                       style={{
                         borderColor: role.color,
+                        backgroundColor: 'transparent',
                       }}
                     >
                       <IconComponent 
@@ -355,7 +356,7 @@ export const TimelineBoard = ({
                     backgroundColor: phaseInfo.borderColor 
                   }}
                 >
-                  WEEK {week} {phaseInfo.label}: {phase.title}
+                  WEEK {week} &gt; {phaseInfo.label}
                 </div>
                 
                 {/* Technology Tag */}
@@ -368,7 +369,7 @@ export const TimelineBoard = ({
                 {/* Overlap Indicator - Simple text indicator */}
                 {hasOverlap && (
                   <div className="px-6 pt-4">
-                    <div className="border bg-terminal-bg p-2" style={{ borderColor: '#ff00ff' }}>
+                    <div className="border p-2" style={{ borderColor: '#ff00ff', backgroundColor: 'transparent' }}>
                       <p className="text-xs font-mono uppercase tracking-wider" style={{ color: '#ff00ff' }}>
                         &gt; NEW CYCLE OVERLAP STARTS AT WEEK {overlapInfo.overlap.overlapStartWeek}
                       </p>
@@ -397,7 +398,7 @@ export const TimelineBoard = ({
                           {/* Day Card - Card-based design */}
                           <div 
                             className={`
-                              border p-3 flex flex-col w-full h-full relative
+                              border p-3 flex flex-col w-full h-full relative day-card-hover
                               ${isInPhase ? '' : 'opacity-40'}
                             `}
                             style={{
@@ -405,7 +406,7 @@ export const TimelineBoard = ({
                               borderStyle: isDecisionDay ? 'dashed' : 'solid',
                               borderWidth: '1px',
                               minHeight: '200px',
-                              backgroundColor: 'var(--color-terminal-bg)',
+                              backgroundColor: 'transparent',
                               backgroundImage: (() => {
                                 // Week 1 Friday, Week 2 Monday, Week 4 Monday & Friday
                                 const shouldShowStripes = 
@@ -426,10 +427,11 @@ export const TimelineBoard = ({
                           >
                             {/* Day Indicator - Top Left */}
                             <div 
-                              className="absolute top-0 left-0 w-12 h-12 border flex items-center justify-center font-mono text-sm font-bold uppercase bg-terminal-bg z-10"
+                              className="absolute top-0 left-0 w-12 h-12 border flex items-center justify-center font-mono text-sm font-bold uppercase z-10"
                               style={{
                                 borderColor: isInPhase ? phaseInfo.borderColor : '#1f521f',
                                 color: isInPhase ? phaseInfo.borderColor : '#1f521f',
+                                backgroundColor: 'transparent',
                               }}
                             >
                               {day}
@@ -530,7 +532,7 @@ export const TimelineBoard = ({
                     <div className="mt-4 grid grid-cols-5 gap-4 px-6 pb-6">
                       <div></div>
                       <div></div>
-                      <div className="border p-4 bg-terminal-bg" style={{ borderColor: phaseInfo.borderColor }}>
+                      <div className="border p-4" style={{ borderColor: phaseInfo.borderColor, backgroundColor: 'transparent' }}>
                         <p className="text-sm text-terminal-primary font-mono uppercase tracking-wider terminal-text-glow">
                           &gt; PRODUCT DESCRIPTION DOC TO FOLLOW{' '}
                           <a 
@@ -554,7 +556,7 @@ export const TimelineBoard = ({
                     <div className="mt-4 grid grid-cols-5 gap-4 px-6 pb-6">
                       <div></div>
                       <div></div>
-                      <div className="border p-4 bg-terminal-bg" style={{ borderColor: phaseInfo.borderColor }}>
+                      <div className="border p-4" style={{ borderColor: phaseInfo.borderColor, backgroundColor: 'transparent' }}>
                         <div className="space-y-1">
                           <p className="text-sm text-terminal-primary font-mono uppercase tracking-wider terminal-text-glow">
                             &gt; [SELL] DEVELOPMENT CONTINUES
@@ -568,7 +570,7 @@ export const TimelineBoard = ({
                       {(() => {
                         const fridayContent = getDayContent(3, 5, phase, [], false, mainDecisionGate?.decision || null);
                         return fridayContent.callout ? (
-                          <div className="border p-4 bg-terminal-bg" style={{ borderColor: phaseInfo.borderColor }}>
+                          <div className="border p-4" style={{ borderColor: phaseInfo.borderColor, backgroundColor: 'transparent' }}>
                             <p className="text-sm font-mono uppercase tracking-wider" style={{ color: '#ff00ff' }}>
                               &gt; {fridayContent.callout}
                             </p>

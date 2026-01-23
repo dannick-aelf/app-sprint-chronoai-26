@@ -85,13 +85,14 @@ export const MilestoneMarker = ({ milestone, size = 'md', onClick }: MilestoneMa
       onClick={onClick}
       className={`
         ${sizeClass}
-        flex items-center justify-center border bg-terminal-bg
+        flex items-center justify-center border
         cursor-pointer transition-all duration-200
         ${onClick ? 'hover:border-terminal-primary' : ''}
         font-mono
       `}
       style={{
         borderColor: config.color,
+        backgroundColor: 'transparent',
       }}
       title={milestone.label || config.label}
     >
