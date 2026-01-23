@@ -534,7 +534,7 @@ export const TimelineBoard = ({
                         <p className="text-sm text-terminal-primary font-mono uppercase tracking-wider terminal-text-glow">
                           &gt; PRODUCT DESCRIPTION DOC TO FOLLOW{' '}
                           <a 
-                            href="https://aelfblockchain.sg.larksuite.com/base/XJf7bTo5ua9XzhsVVzPlbKIigoo?from=from_copylink"
+                            href="https://aelfblockchain.sg.larksuite.com/docx/HdIJdNMVgoo1Skxk0ZAlZtPJglh?from=from_copylink"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="underline hover:text-terminal-secondary transition-colors"
