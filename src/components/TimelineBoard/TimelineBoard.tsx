@@ -34,8 +34,8 @@ const getRolesForDay = (week: number, day: number): string[] => {
     roles.push('vibecoder');
   }
   
-  // Week 2: Monday - Vibecoder
-  if (week === 2 && day === 1) {
+  // Week 2: Monday and Wednesday - Vibecoder
+  if (week === 2 && (day === 1 || day === 3)) {
     roles.push('vibecoder');
   }
   
@@ -118,7 +118,13 @@ const getDayContent = (
         };
       }
     }
-    if (day >= 2 && day <= 5) {
+    if (day === 3) {
+      return {
+        title: 'INTERNAL TESTING',
+        description: ['Company-wide testing', 'Submit product description doc'],
+      };
+    }
+    if ((day >= 2 && day <= 5) && day !== 3) {
       return {
         title: 'INTERNAL TESTING',
         description: ['Company-wide testing'],
@@ -133,7 +139,7 @@ const getDayContent = (
       if (surveyStart) {
         return {
           title: 'SURVEY LAUNCH',
-          description: ['Send feedback survey', 'React Native Dev for entire week'],
+          description: ['Send feedback survey', 'React Native dev for entire week'],
           footer: '--survey-active',
         };
       }
@@ -163,7 +169,7 @@ const getDayContent = (
     if (day === 5 && decision === 'sell') {
       return {
         title: 'IMPROVEMENTS',
-        description: ['finalise features improvements', 'quick fixes'],
+        description: ['Finalise features improvements', 'Quick fixes'],
         callout: 'Showcase new vibecoded app from new cycle',
       };
     }
@@ -526,7 +532,7 @@ export const TimelineBoard = ({
                       <div></div>
                       <div className="border p-4 bg-terminal-bg" style={{ borderColor: phaseInfo.borderColor }}>
                         <p className="text-sm text-terminal-primary font-mono uppercase tracking-wider terminal-text-glow">
-                          &gt; VIBECODER SUBMIT PRODUCT DESCRIPTION DOC, FOLLOW{' '}
+                          &gt; PRODUCT DESCRIPTION DOC TO FOLLOW{' '}
                           <a 
                             href="https://aelfblockchain.sg.larksuite.com/base/XJf7bTo5ua9XzhsVVzPlbKIigoo?from=from_copylink"
                             target="_blank"
