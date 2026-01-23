@@ -41,8 +41,8 @@ const getRolesForDay = (week: number, day: number): string[] => {
   
   // Week 3
   if (week === 3) {
-    // Monday to Friday - Frontend Dev
-    if (day >= 1 && day <= 5) {
+    // Monday, Tuesday, Thursday, Friday - Frontend Dev (exclude Wednesday)
+    if ((day >= 1 && day <= 2) || (day >= 4 && day <= 5)) {
       roles.push('frontend-dev');
     }
     // Monday to Friday - Design Lead
@@ -53,18 +53,19 @@ const getRolesForDay = (week: number, day: number): string[] => {
     if (day >= 3 && day <= 5) {
       roles.push('product-lead');
     }
-    // Wednesday - Business Director
-    if (day === 3) {
+    // Wednesday, Thursday - Business Director
+    if (day >= 3 && day <= 4) {
       roles.push('business-director');
     }
   }
   
-  // Week 4: Monday to Friday - Frontend Dev, Backend Dev, Design Lead, and Product Lead
+  // Week 4: Monday to Friday - Frontend Dev, Backend Dev, Design Lead, Product Lead, and Business Director
   if (week === 4 && day >= 1 && day <= 5) {
     roles.push('frontend-dev');
     roles.push('backend-dev');
     roles.push('design-lead');
     roles.push('product-lead');
+    roles.push('business-director');
   }
   
   return roles;
@@ -132,7 +133,7 @@ const getDayContent = (
       if (surveyStart) {
         return {
           title: 'SURVEY LAUNCH',
-          description: ['Send feedback survey', 'Start React Native dev'],
+          description: ['Send feedback survey', 'React Native Dev for entire week'],
           footer: '--survey-active',
         };
       }
@@ -155,14 +156,14 @@ const getDayContent = (
     }
     if (day === 4 && decision === 'sell') {
       return {
-        title: 'PRODUCT IMPROVE',
-        description: ['Implement features', 'Update requirements'],
+        title: 'PRODUCT PREP',
+        description: ['iOS submission', 'Go to market positioning', 'Brand design'],
       };
     }
     if (day === 5 && decision === 'sell') {
       return {
-        title: 'FINALIZE CHANGES',
-        description: ['Complete improvements'],
+        title: 'IMPROVEMENTS',
+        description: ['finalise features improvements', 'quick fixes'],
         callout: 'Showcase new vibecoded app from new cycle',
       };
     }
@@ -181,7 +182,7 @@ const getDayContent = (
       if (testflight) {
         return {
           title: 'TESTFLIGHT READY',
-          description: ['Team testing begins', 'Bug fixes and polish'],
+          description: ['Team testing begins', 'Bug fixes and polish', 'Market preparation'],
           footer: '--testflight-active',
         };
       }
@@ -196,8 +197,8 @@ const getDayContent = (
       const marketLive = milestones.find(m => m.type === 'market-live');
       if (marketLive) {
         return {
-          title: 'MARKET LIVE',
-          description: ['App goes to market', 'CEO showcase'],
+          title: 'IOS SUBMISSION',
+          description: ['App submitted', 'CEO showcase'],
           footer: '--deployment:complete',
         };
       }
@@ -518,27 +519,45 @@ export const TimelineBoard = ({
                     })}
                   </div>
 
-                  {/* Decision Result Display and Callout - Same row below day divs */}
-                  {(mainDecisionGate?.decision || (week === 3 && (() => {
-                    const fridayContent = getDayContent(3, 5, phase, [], false, mainDecisionGate?.decision || null);
-                    return fridayContent.callout;
-                  })())) && week === 3 && (
+                  {/* Decision Result Display - Week 2 Wednesday */}
+                  {week === 2 && (
                     <div className="mt-4 grid grid-cols-5 gap-4 px-6 pb-6">
                       <div></div>
                       <div></div>
-                      {mainDecisionGate?.decision && (
-                        <div className="border p-4 bg-terminal-bg" style={{ borderColor: phaseInfo.borderColor }}>
-                          <div className="space-y-1">
-                            <p className="text-sm text-terminal-primary font-mono uppercase tracking-wider terminal-text-glow">
-                              &gt; [SELL] DEVELOPMENT CONTINUES
-                            </p>
-                            <p className="text-sm text-terminal-error font-mono uppercase tracking-wider">
-                              &gt; [KILL] DEVELOPMENT STOPS
-                            </p>
-                          </div>
+                      <div className="border p-4 bg-terminal-bg" style={{ borderColor: phaseInfo.borderColor }}>
+                        <p className="text-sm text-terminal-primary font-mono uppercase tracking-wider terminal-text-glow">
+                          &gt; VIBECODER SUBMIT PRODUCT DESCRIPTION DOC, FOLLOW{' '}
+                          <a 
+                            href="https://aelfblockchain.sg.larksuite.com/base/XJf7bTo5ua9XzhsVVzPlbKIigoo?from=from_copylink"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline hover:text-terminal-secondary transition-colors"
+                            style={{ color: 'inherit' }}
+                          >
+                            [TEMPLATE]
+                          </a>
+                        </p>
+                      </div>
+                      <div></div>
+                      <div></div>
+                    </div>
+                  )}
+
+                  {/* Decision Result Display - Week 3 Wednesday */}
+                  {week === 3 && (
+                    <div className="mt-4 grid grid-cols-5 gap-4 px-6 pb-6">
+                      <div></div>
+                      <div></div>
+                      <div className="border p-4 bg-terminal-bg" style={{ borderColor: phaseInfo.borderColor }}>
+                        <div className="space-y-1">
+                          <p className="text-sm text-terminal-primary font-mono uppercase tracking-wider terminal-text-glow">
+                            &gt; [SELL] DEVELOPMENT CONTINUES
+                          </p>
+                          <p className="text-sm text-terminal-error font-mono uppercase tracking-wider">
+                            &gt; [KILL] DEVELOPMENT STOPS
+                          </p>
                         </div>
-                      )}
-                      {!mainDecisionGate?.decision && <div></div>}
+                      </div>
                       <div></div>
                       {(() => {
                         const fridayContent = getDayContent(3, 5, phase, [], false, mainDecisionGate?.decision || null);
