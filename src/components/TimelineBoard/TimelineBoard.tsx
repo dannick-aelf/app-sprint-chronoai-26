@@ -7,7 +7,7 @@
  * - No overlapping elements
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { TimelineBoardProps, Phase, Milestone } from '../../types';
 import { TechnologyBadge } from '../TechnologyBadge/TechnologyBadge';
 import { MilestoneMarker } from '../milestones/MilestoneMarker';
@@ -238,7 +238,48 @@ export const TimelineBoard = ({
   onDecisionMade: _onDecisionMade,
 }: TimelineBoardProps) => {
   const [cursorVisible, setCursorVisible] = useState(true);
+  const [displayedText, setDisplayedText] = useState('');
   const weeks = [1, 2, 3, 4];
+  const fullText = 'APP SPRINT CHRONOAI 26';
+  const typewriterState = useRef({ currentIndex: 0, isDeleting: false });
+
+  // Typewriter effect - looping
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    const typeWriter = () => {
+      const state = typewriterState.current;
+      
+      if (!state.isDeleting && state.currentIndex < fullText.length) {
+        // Typing
+        setDisplayedText(fullText.slice(0, state.currentIndex + 1));
+        state.currentIndex++;
+        timeoutId = setTimeout(typeWriter, 100);
+      } else if (!state.isDeleting && state.currentIndex === fullText.length) {
+        // Finished typing, wait before deleting
+        timeoutId = setTimeout(() => {
+          state.isDeleting = true;
+          typeWriter();
+        }, 2000);
+      } else if (state.isDeleting && state.currentIndex > 0) {
+        // Deleting
+        setDisplayedText(fullText.slice(0, state.currentIndex - 1));
+        state.currentIndex--;
+        timeoutId = setTimeout(typeWriter, 50);
+      } else if (state.isDeleting && state.currentIndex === 0) {
+        // Finished deleting, wait before typing again
+        state.isDeleting = false;
+        timeoutId = setTimeout(typeWriter, 500);
+      }
+    };
+
+    // Start the typewriter effect
+    typeWriter();
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [fullText]);
 
   // Blinking cursor effect
   useEffect(() => {
@@ -293,7 +334,7 @@ export const TimelineBoard = ({
         <div className="mb-12">
         <div className="mb-6">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-wider text-terminal-primary terminal-text-glow font-mono">
-            <span className="terminal-prompt">APP SPRINT CHRONOAI 26</span>
+            <span className="terminal-prompt">{displayedText}</span>
             <span className={`inline-block w-2 h-8 bg-terminal-primary ml-2 ${cursorVisible ? 'opacity-100' : 'opacity-0'}`}></span>
           </h1>
           <p className="text-terminal-muted text-lg uppercase tracking-wider mt-4 font-mono">
